@@ -1,0 +1,153 @@
+
+/*
+ * NAME: NATHAN COX
+ */
+package lab10;
+import java.util.*;
+
+
+public class ClientStackAndQueue{
+	public static void main(String[] args) { 
+		LinkedStackClass<Integer> intStack = new LinkedStackClass<Integer>(); 
+		QueueClass<Integer> intQueue = new QueueClass();
+		int num;
+		Integer remove;
+		
+		Scanner input = new Scanner(System.in);
+		System.out.println("Enter integers(999 to stop): ");
+		num = input.nextInt();
+		while (num != 999) {
+			intStack.push((Integer)num);
+			num = input.nextInt();
+		}
+		System.out.println("The original stack printed in direct order (bottom to top) is: ");
+		printBackStack(intStack);
+		System.out.println("The stack printed in reverse order (top to bottom) is: ");
+		printStack(intStack);
+		System.out.println("The stack stores " + countItems(intStack) + " items.");
+		System.out.println("The top is: " + intStack.peek());
+		System.out.println("The second item (below top) is: " + getSecond(intStack));
+		System.out.print("Enter value to be removed from stack: ");
+		remove = input.nextInt();
+		removeItem(intStack, remove);
+		System.out.println("The stack after removing every occurrence of " + remove + " is:");
+		printBackStack(intStack);
+	    reverseStack(intStack);
+	    System.out.println("Reversed the stack. The new stack printed in direct order is: ");
+	    printBackStack(intStack);
+
+	    System.out.println("The queue is: ");
+	    intQueue.enqueue(3);
+	    intQueue.enqueue(6);
+	    intQueue.enqueue(9);
+	    intQueue.enqueue(12);
+	    intQueue.enqueue(15);
+	    intQueue.enqueue(18);
+	    intQueue.enqueue(21);
+	    intQueue.enqueue(24);
+	    intQueue.enqueue(27);
+	    intQueue.enqueue(30);
+	    printQueue(intQueue);
+	    System.out.println("The reversed queue is: ");
+	    reverseQueue(intQueue);
+	    printQueue(intQueue);
+	} 
+	public static void printBackStack(LinkedStackClass<Integer> intStack) {
+		LinkedStackClass<Integer> tempStack = new LinkedStackClass<Integer>(); 
+		while (!intStack.isEmptyStack())  { 
+			tempStack.push(intStack.peek()); 
+			intStack.pop(); 
+		} 
+		while (!tempStack.isEmptyStack())  { 
+			System.out.print(tempStack.peek() + " "); 
+			intStack.push(tempStack.peek()); 
+			tempStack.pop(); 
+		} 
+		System.out.println();
+	}
+	public static void printStack(LinkedStackClass<Integer> intStack) {
+		LinkedStackClass<Integer> tempStack = new LinkedStackClass<Integer>();
+		while(!intStack.isEmptyStack()) {
+			System.out.print(intStack.peek() + " ");
+			tempStack.push(intStack.peek());
+			intStack.pop();
+		}
+		while(!tempStack.isEmptyStack()) {
+			intStack.push(tempStack.peek());
+			tempStack.pop();
+		}
+		System.out.println();
+	}
+	public static Integer getSecond(LinkedStackClass<Integer> intStack) {
+		Integer second;
+		Integer temp;
+		temp = intStack.peek();
+		intStack.pop();
+		second = intStack.peek();
+		intStack.push(temp);
+		return second;
+	}
+	public static int countItems(LinkedStackClass<Integer> intStack) {
+		LinkedStackClass<Integer> tempStack = new LinkedStackClass();
+		int numItems = 0;
+		while(!intStack.isEmptyStack()) {
+			numItems++;
+			tempStack.push(intStack.peek());
+			intStack.pop();
+		}
+		while(!tempStack.isEmptyStack()) {
+			intStack.push(tempStack.peek());
+			tempStack.pop();
+		}
+		return numItems;
+	}
+	public static void removeItem(LinkedStackClass<Integer> intStack, Integer n) {
+		LinkedStackClass<Integer> tempStack = new LinkedStackClass();
+		while(!intStack.isEmptyStack()) {
+			if(intStack.peek() != n)
+				tempStack.push(intStack.peek());
+			intStack.pop();
+		}
+		while(!tempStack.isEmptyStack()) {
+			intStack.push(tempStack.peek());
+			tempStack.pop();
+		}
+
+	}
+	public static void reverseStack(LinkedStackClass<Integer> s) {
+		QueueClass<Integer> q = new QueueClass<Integer>();
+		while(!s.isEmptyStack()) {
+			q.enqueue(s.peek());
+			s.pop();
+		}
+		while(!q.isEmptyQueue()) {
+			s.push(q.front());
+			q.dequeue();
+		}
+
+	}
+	public static void reverseQueue(QueueClass<Integer> q){
+	       LinkedStackClass<Integer> s = new LinkedStackClass<Integer>();
+	       while(!q.isEmptyQueue()) {
+				s.push(q.front());
+				q.dequeue();
+			}
+	       while(!s.isEmptyStack()) {
+				q.enqueue(s.peek());
+				s.pop();
+			}
+	 }
+	public static void printQueue(QueueClass<Integer> q) {
+		QueueClass<Integer> tempq = new QueueClass();
+		while(!q.isEmptyQueue()) {
+			System.out.print(q.front() + " ");
+			tempq.enqueue(q.front());
+			q.dequeue();
+		}
+		while(!tempq.isEmptyQueue()) {
+			q.enqueue(tempq.front());
+			tempq.dequeue();
+		}
+		System.out.println();
+	}
+}
